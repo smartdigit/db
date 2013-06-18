@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<title>Monolith Mobile</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" href="style/reset.css" /> 
+    <link rel="stylesheet" type="text/css" href="style/root.css" /> 
+    
+    <script type="text/javascript" src="js/dbConnection.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/toogle.js"></script>
+    <script type="text/javascript">
+	function onSelect(){
+		var id = document.getElementById('ItemID').value;
+		
+		var query = "SELECT * FROM ItemNames where ItemID=?;";
+		try {
+		localDB.transaction(function(transaction){
+        
+				transaction.executeSql(query, [id], function(transaction, results){
+				
+					var row = results.rows.item(0);
+					
+					document.getElementById('Description').value = row['Description'];
+				}, function(transaction, error){
+					updateStatus("Error: " + error.code + "<br>Message: " + error.message);
+				});
+			});
+		} 
+		catch (e) {
+			updateStatus("Error: Unable to select data from the db " + e + ".");
+		}
+	}
+	</script>
+</head>
+<body onload="onInit()">	
+    <!-- start header -->
+    	<div id="header">
+         <a href="#"><img src="img/logo.png" width="50" height="24" alt="logo" class="logo" /></a>
+         	<a href="main.html" class="button back"><img src="img/back-button.png" width="15" height="16" alt="icon" /></a>
+        <div class="clear"></div>
+        </div>
+    <!-- end header -->
+    
+    <!-- start searchbox -->
+    <div class="searchbox">
+   	  <form id="form1" name="form1" method="post" action="">
+      	<input type="text" name="textfield" id="textfield" class="txtbox" />
+   	  </form>
+    </div>
+    <!-- end searchbox -->
+  
+    <!-- start page -->
+    <div class="page">
+        <div class="simplebox">
+			<center><h1 class="titleh">Product Details</h1></center>
+            <div class="content">
+                <form id="form12" name="form1" method="post" onsubmit="onSelect();">
+					
+					<div class="form-line">
+						<label class="st-label">Item </label><input type="text" name="ItemID" id="ItemID" onchange='onSelect();' style="width:50%;" />
+						<input type="button" onclick="onSelect();" style="background:url('img/icons/search.png');background-position:center;background-repeat:no-repeat; width:40px" value=""/></a>
+						<input type="button" style="background:url('img/icons/photo-gallery.png');background-position:center;background-repeat:no-repeat; width:40px" value=""/></a>
+						
+					</div>
+					
+                    <div class="form-line">
+						<label class="st-label">Description</label>
+						<textarea name="Description" id="Description" style="width:93%;" rows="3" cols="3"></textarea>
+                    </div>
+					
+					<table class="tabledata"  style="width:100%; height:20px" > 
+                        <thead> 
+							<tr align="center"> 	
+                            	<th style="width:50%">Cost Price Without VAT</th> 
+                            	<th style="width:50%">Cost Price With VAT</th> 
+                            </tr> 
+                       	</thead> 
+						<tbody> 
+                           	<tr align="center"> 
+						  		<td>5,00</td> 
+                           		<td>7,00 </td> 
+                           	</tr> 
+						</tbody> 
+                    </table>
+					<br>
+					<table class="tabledata"  style="width:100%;"> 
+						<thead> 
+							<tr align="center"> 
+								<th style="width:20%">P.Line</th>	
+								<th style="width:40%">Price Without VAT</th> 
+                            	<th style="width:40%">Price With VAT</th> 
+							</tr> 
+                        </thead> 
+						<tbody> 
+                           	<tr align="center"> 
+								<td>
+									<select name="select" id="select" style="width:100%;">
+										<option>1</option>
+										<option selected>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+										<option>6</option>
+										<option>7</option>
+										<option>8</option>
+										<option>9</option>
+										<option>10</option>
+									</select>
+								</td>
+								<td> 1.00 £ </td>
+								<td> 1.20 £ </td>
+                            </tr> 
+										
+						</tbody> 
+                    </table>
+				</div>
+                </form>      
+            </div>
+		</div>
+        <!-- start top button -->
+        <div class="topbutton"><a href="#header"><span>Top</span></a></div>
+        <!-- end top button -->
+		
+		<!-- start footer -->
+        <div class="footer">
+        <center>© 2013 - Monolith Mobile by <a href="http://smartdigit.pt" target="_blank">SmartDigit</a></center>
+        </div>
+        <!-- end footer -->
+		<div class="clear"></div>
+    </div>
+    <!-- end page -->
+</body>
+</html>
